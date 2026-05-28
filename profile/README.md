@@ -135,6 +135,11 @@ articulation. The "compound AI systems" framing
 was already being built; n8n is where the underlying pattern was
 internalized first.
 
+These pipelines are all variations of the same pattern. **my-AI-stro
+operates the pattern at full scale** — three coexisting named
+pipelines (ingestion, advisor, Classroom) all sharing the same
+NDJSON event vocabulary, observable end-to-end from the UI.
+
 ### Lineage two — the verification discipline
 
 **MyMaestro** was the first attempt at a personal AI study tool —
@@ -154,6 +159,14 @@ persistence boundary, a deterministic judge that subtracts points
 for ungrounded items, an audit loop that rotates canonical
 entries toward more-grounded versions over time.
 
+**my-AI-stro answers MyMaestro's failure by making verification a
+system property, not a feature.** Grounding gates at the SOT write,
+at the Notebook save, at the Classroom plan persist, and at
+runtime on raise-hand answers. The Judge in the audit loop is
+deterministic (*not LLM-based*) because the grader can't be an LLM
+or it would compound the hallucination problem. The model proposes;
+Python disposes — everywhere.
+
 ### The combination
 
 The pipeline-shape discipline (from the Build It Publisher) tells
@@ -172,6 +185,73 @@ Build It Publisher in n8n in January 2026 and then watching
 MyMaestro hallucinate two months later. Both lineages are traceable
 to specific work on specific projects, and both are visible in every
 project the studio has shipped since.
+
+### my-AI-stro — the crowning jewel
+
+The body of work didn't accumulate randomly. **It converged.** Eight
+months of preceding projects each contributed a lesson that became a
+piece of my-AI-stro:
+
+- *Coral Reef Aquarium* taught the multi-entity update/draw
+  discipline that informed the Classroom flow's beat playback
+- *Build It* taught the explicit-constraint-document habit
+  (Constitution → ARCHITECTURE.md)
+- *The Build It Publisher* taught the named-stage pipeline shape
+  (now operating in three coexisting pipelines)
+- *Prompt Polish Studio* taught how to ship a multi-stage AI agent
+  under deadline pressure
+- *SprinklerPro 3D* taught locked-spec discipline at product scale
+- *MyMaestro* taught — at the cost of its own existence — that
+  verification has to be a system property
+
+my-AI-stro is what those lessons compound into. It contains:
+
+- **Three coexisting named pipelines** with a shared NDJSON event
+  vocabulary — ingestion (graph_entry → retrieval → summarization
+  → validation → memory_write), advisor (retrieval → arc →
+  section ×N → recap → assembly), and Classroom (picker →
+  plan generation → beat playback → session end)
+- **A grounding gate at every persistent layer** — validation at
+  the SOT write, grounding at the Notebook save, plan validation
+  at the Classroom persist, runtime grounding gate on raise-hand
+  answers
+- **A deterministic, formula-based Judge** in the audit loop —
+  deliberately *not* an LLM, because the grader can't be the
+  thing it's grading
+- **Trust isolation across local LLMs** at the model-routing
+  layer — the model that owns the SOT (llama3:8b) never handles
+  ungrounded chat, which routes to llama3.2 instead
+- **A self-improving audit loop** that rotates canonical entries
+  toward more-grounded versions autonomously, with two stability
+  guards (stable-group epsilon, churn suppression) to prevent
+  unproductive thrashing
+- **The full curation chain** (Ingest → SOT → Chat → Notebook →
+  Classroom) Python-verified at every boundary — methodology
+  scaled across surfaces
+- **A persistent gradebook layer** extending verification into
+  learning analytics — every CHECK answered and every Quiz attempt
+  appends to an append-only event log, aggregated into per-lesson
+  grades by pure-Python math
+- **A mobile build** (six chunks plus a cooling pass) proving the
+  methodology survives device-context shifts without losing the
+  thesis
+
+None of this is a single clever architecture. It is the entire
+Deterministic Scaffold thesis operating as a working system,
+end-to-end auditable by anyone who reads the source. **my-AI-stro
+is the crowning jewel of the methodology** — the project the
+methodology can be taught from, the reference implementation a
+stranger can read to understand what the thesis actually means
+in practice.
+
+### Sibling expression — The House Always Wins
+
+Where my-AI-stro is the methodology realized as a full system,
+*The House Always Wins* is the methodology realized as **real-time
+game AI** — the same verification discipline rendered as a live
+debug overlay where every combat decision is auditable at every
+frame. Two projects, same thesis, different shapes. The crowning
+jewel and the live demonstration.
 
 ---
 
