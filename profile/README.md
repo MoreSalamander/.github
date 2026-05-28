@@ -87,29 +87,91 @@ documentation, games, video.
 ## How the methodology was earned
 
 The MoreSalamander thesis isn't an abstract design preference picked
-up from a book. It was earned through a specific failure on a
-specific project.
+up from a book. It has **two lineages**, both earned through
+specific work on specific projects. The combination of the two is
+what the Deterministic Scaffold thesis encodes.
+
+### Lineage one — the pipeline-shape discipline
+
+In January 2026, while building **Build It**, the studio's founder
+built a small n8n workflow called the **Build It Publisher** to
+convert markdown guides into styled HTML and push them to GitHub
+Pages. The workflow had six stages:
+
+> *Webhook Trigger → Parse Markdown → Convert to HTML → Build Full
+> HTML → Push to GitHub → Respond Success.*
+
+Each stage had a single responsibility, an explicit name, and a
+visible data connection to the next stage. n8n's visual
+node-and-edge model made the architectural pattern unavoidable:
+stages must be named, data flow must be explicit, each stage must
+do one thing.
+
+That pattern got internalized and then re-encoded — in code, in
+project after project:
+
+- **my-AI-stro's ingestion pipeline** — graph_entry → retrieval →
+  summarization → validation → memory_write
+- **my-AI-stro's advisor pipeline** — retrieval → arc → section ×N →
+  recap → assembly → done
+- **Prompt Polish Studio** — analyze → questions → polish → compare
+- **SprinklerPro 3D auto-placement** — build irrigable polygon →
+  build placement grid → filter points → place heads → route pipe
+- **The House Always Wins** per-frame AI loop — assess → detect
+  patterns → identify opportunities → decide → execute → log
+
+The same shape every time. The Build It Publisher is the first
+artifact in the studio's body of work that demonstrates pipeline
+thinking. Everything afterward inherits its DNA. n8n's visual
+node-and-edge model later re-emerged in code as **NDJSON event
+streams** with per-stage event vocabulary (`step_start` /
+`step_complete` / `token` / `done` / `error`) — the same
+discipline, rendered as text events instead of visual lines.
+
+This lineage matters because it shows the methodology has a
+specific *origin in hands-on practice*, not in retrospective
+articulation. The "compound AI systems" framing
+(Zaharia et al., Berkeley AI Research, 2024) puts a name to what
+was already being built; n8n is where the underlying pattern was
+internalized first.
+
+### Lineage two — the verification discipline
 
 **MyMaestro** was the first attempt at a personal AI study tool —
 Next.js, Prisma, Anthropic Claude API. It generated quizzes and
-study guides from a student's own course notes. It worked technically.
-And it **hallucinated.** A study tool that generates plausible-sounding
-wrong content is worse than no study tool, because students who can't
-already distinguish correct from invented don't catch the drift.
+study guides from a student's own course notes. It worked
+technically. And it **hallucinated.** A study tool that generates
+plausible-sounding wrong content is worse than no study tool,
+because students who can't already distinguish correct from invented
+don't catch the drift.
 
 The fix wasn't a tighter prompt or a different model. The fix was
-architectural: **verification has to be a load-bearing layer in the
-data pipeline, not a soft warning at the UI.** MyMaestro was
+architectural: **verification has to be a load-bearing layer in
+the data pipeline, not a soft warning at the UI.** MyMaestro was
 discontinued. The next attempt — my-AI-stro — was built on that
 principle from the ground up, with grounding gates at every
 persistence boundary, a deterministic judge that subtracts points
-for ungrounded items, an audit loop that rotates canonical entries
-toward more-grounded versions over time.
+for ungrounded items, an audit loop that rotates canonical
+entries toward more-grounded versions over time.
 
-The Deterministic Scaffold thesis comes from that. It's not a
-philosophy retrofitted to the work — it's the design response to a
-specific failure mode, applied as a generalizable principle going
-forward.
+### The combination
+
+The pipeline-shape discipline (from the Build It Publisher) tells
+you HOW a system is structured: named stages, atomic
+responsibilities, explicit data flow. The verification discipline
+(from MyMaestro's failure) tells you what every stage must do
+BEFORE it persists anything: ground the model output against the
+source, reject what fails, score what passes, commit only what
+survives.
+
+**Pipeline shape + verification at every boundary = the
+Deterministic Scaffold.**
+
+The methodology didn't come from a paper. It came from building the
+Build It Publisher in n8n in January 2026 and then watching
+MyMaestro hallucinate two months later. Both lineages are traceable
+to specific work on specific projects, and both are visible in every
+project the studio has shipped since.
 
 ---
 
@@ -195,7 +257,13 @@ the methodology being acquired in real time.
 
 2. **Build It** *(month ~4)* — first project with explicit methodology.
    Constitution v2.0. Atomic step rules. The moment "I need a system
-   for thinking about my systems" became conscious.
+   for thinking about my systems" became conscious. Also produced the
+   **Build It Publisher** — a small n8n workflow that converted
+   markdown guides into styled HTML and pushed them to GitHub Pages.
+   The pipeline pattern that workflow encoded (named stages, explicit
+   data flow, atomic per-stage responsibility) became the architectural
+   backbone of every project the studio has shipped since. *See
+   "How the methodology was earned" above for the full lineage.*
 
 3. **The Journal of Informal Human Protocols** *(month ~5)* — the
    methodology generalizes to non-code work. Same constraint-driven
